@@ -56,7 +56,7 @@ class check_test_dcc(unittest.TestCase):
         # Get a real DCC from the environment provided by the CI system
         test_dcc = os.getenv("DCC", "")
         valid, content = dcc_validator.validate(test_dcc)
-        self.assertIsNone(content)
+        self.assertIsNotNone(content)
         self.assertFalse(valid)
 
 if __name__ == '__main__':

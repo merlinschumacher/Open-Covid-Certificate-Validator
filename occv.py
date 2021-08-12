@@ -1,73 +1,105 @@
 import os
-import zlib
-from typing import Callable, Dict
+from typing import Union
 
-import cwt
-from base45 import b45decode
-from cwt import COSE, Claims
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
-from cert_loaders.de import CertificateLoader_DE
-from cert_loaders.test import CertificateLoader_XX
+from validator import DCCValidator
+
+# get the server country from the environment 
+SERVER_COUNTRY = os.getenv("SERVER_COUNTRY", "XX")
+
+api_description = """
+    Open Covid Certificate Validator API
+
+    This API will validate compliant EU Digital Covid Certificates.
+    """ 
 
 
-class DCCValidator():
+app = FastAPI(title="Open Covid Certificate Validator", 
+              description=api_description, 
+              version="0.0.1", 
+              )
 
-    def __init__(self, country):
-        self.CERT_LOADERS: Dict[str, Callable[[], None]] = {
-            'DE': CertificateLoader_DE,
-            'XX': CertificateLoader_XX
+# initialize the validation server
+validator = DCCValidator(SERVER_COUNTRY)
+
+# defines the schema for the request
+class DCCQuery(BaseModel):
+    dcc: str = None
+    class Config:
+        schema_extra = {
+            "example": {
+                "dcc": "HC1:NCF0XN%..."
+            }
         }
-        # initiates the certificate loader
-        cert_loader = self._get_cert_loader(country)()
-        # loads the certificates from the loader instance
-        self._certs = cert_loader()
-        self._cose = COSE(
-            kid_auto_inclusion=True, alg_auto_inclusion=True, verify_kid=False
-        )
-
-    def validate(self, dcc):
-
-        dcc = self._decode(dcc)
-        if dcc is None:
-            return [False, None]
-
-        try:
-            decoded = cwt.decode(dcc, self._certs)
-            claims = Claims.new(decoded)
-            return [True, claims.to_dict()]
-        except Exception as error:
-            print("Could not validate certificate.")
-            return [False,  {}]
-
-    def _decode(self, dcc):
-        if dcc.startswith("HC1:"):
-            dcc = dcc[4:]
-        try:
-            dcc = b45decode(dcc)
-        except ValueError:
-            return None
-
-        if dcc.startswith(b'x'):
-            dcc = zlib.decompress(dcc)
-        return dcc
-
-    def _get_cert_loader(self, country):
-        return self.CERT_LOADERS[country]
 
 
-def main():
+# defines the schema for the request
+class DCCData(BaseModel):
+    valid: bool = False
+    dccdata: dict = None
+    class Config:
+        schema_extra = {
+            "example": {
+                    "valid": True,
+                    "dccdata": {
+                        "1": "AT",
+                        "4": 1635876000,
+                        "6": 1620324000,
+                        "-260": {
+                            "1": {
+                                "v": [
+                                {
+                                    "dn": 1,
+                                    "ma": "ORG-100030215",
+                                    "vp": "1119349007",
+                                    "dt": "2021-02-18",
+                                    "co": "AT",
+                                    "ci": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+                                    "mp": "EU/1/20/1528",
+                                    "is": "Ministry of Health, Austria",
+                                    "sd": 2,
+                                    "tg": "840539006"
+                                }
+                                ],
+                                "nam": {
+                                "fnt": "MUSTERFRAU<GOESSINGER",
+                                "fn": "Musterfrau-Gößinger",
+                                "gnt": "GABRIELE",
+                                "gn": "Gabriele"
+                                },
+                                "ver": "1.0.0",
+                                "dob": "1998-02-26"
+                            }
+                        }
+                    }
+            }
+        }
 
-    # Retrieve the requrested country for the certificates from env or fall back to DE
-    SERVER_COUNTRY = os.getenv("SERVER_COUNTRY", "DE")
-    # Retrieve DCC from env or fall back on empty string
-    DCC = os.getenv("DCC", "")
 
-    # Initiate the DSCValidator
-    validator = DCCValidator(SERVER_COUNTRY)
+@app.get("/")
+async def read_root():
+    """
+    Return the root path of the API
+    """
+    return {}
 
-    # Validate the DCC
-    print(validator.validate(DCC))
+@app.post("/", response_model=DCCData)
+async def validate_dcc(dcc: DCCQuery):
+    """
+    post call to read validate a received DCC
+    """
+    dcc = dcc.dcc
+    try:
+        valid, dcc_data = validator.validate(dcc)
+    except Exception as error:
+        print(error)
+        raise HTTPException(status_code=415, detail=str("Data format incompatible."))
+        dcc_data = None
+        valid = False
 
 
-if __name__ == '__main__':
-    main()
+    return  DCCData(valid=valid, dccdata=dcc_data) 
+
+
