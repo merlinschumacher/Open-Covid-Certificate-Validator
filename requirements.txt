@@ -1,0 +1,11 @@
+base45==0.4.2
+cbor2==5.4.1
+certifi==2021.5.30
+cffi==1.14.6
+charset-normalizer==2.0.4
+cryptography==3.4.7
+cwt==1.3.2
+idna==3.2
+pycparser==2.20
+requests==2.26.0
+urllib3==1.26.6
