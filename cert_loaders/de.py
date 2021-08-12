@@ -9,7 +9,7 @@ from cryptography.x509 import load_der_x509_certificate
 from cwt import COSEKey
 from cwt.algs.ec2 import EC2Key
 from cwt.const import COSE_KEY_TYPES
-
+from typing import Dict, Any
 from .certificate_loader import CertificateLoader
 
 
