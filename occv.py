@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from validator import DCCValidator
 
 # get the server country from the environment 
-SERVER_COUNTRY = os.getenv("SERVER_COUNTRY", "XX")
+CERT_COUNTRY = os.getenv("CERT_COUNTRY", "XX")
 
 api_description = """
     Open Covid Certificate Validator API
@@ -22,7 +22,7 @@ app = FastAPI(title="Open Covid Certificate Validator",
               )
 
 # initialize the validation server
-validator = DCCValidator(SERVER_COUNTRY)
+validator = DCCValidator(CERT_COUNTRY)
 
 # defines the schema for the request
 class DCCQuery(BaseModel):
@@ -101,5 +101,3 @@ async def validate_dcc(dcc: DCCQuery):
 
 
     return  DCCData(valid=valid, dccdata=dcc_data) 
-
-
