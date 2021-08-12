@@ -2,7 +2,7 @@ version: '3.8'
 
 services: 
   occv:
-    image: gchr.io/merlinschumacher/occv:latest
+    image: ghcr.io/merlinschumacher/open-covid-certificate-validator:main
     volumes: 
       - ./data:/code/data
       - /etc/localtime:/etc/localtime:ro
