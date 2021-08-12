@@ -1,0 +1,6 @@
+[submodule "verify-ehc"]
+	path = verify-ehc
+	url = https://github.com/panzi/verify-ehc
+[submodule "verify_ehc"]
+	path = verify_ehc
+	url = https://github.com/panzi/verify-ehc
