@@ -19,6 +19,7 @@ class CertificateLoader_DE(CertificateLoader):
         self._cert_url = 'https://de.dscg.ubirch.com/trustList/DSC/'
         self._cert_filename = 'de.json'
         self._build_certlist()
+        self._start_update_timer()
 
     def _uint_to_bytes(self, v: int) -> bytes:
         if v < 0:

@@ -1,5 +1,6 @@
 import json
-
+from datetime import datetime, timedelta
+from threading import Timer
 from cwt import load_pem_hcert_dsc
 
 
@@ -15,6 +16,7 @@ class CertificateLoader:
         self._certs = []
         self._cert_url = None
         self._cert_filename = None
+        self._update_timer = None
         pass
 
     def __call__(self):
@@ -68,3 +70,22 @@ class CertificateLoader:
         certs_json = self._load_certs()
         for certs in certs_json:
             self._certs.append(load_pem_hcert_dsc(certs))
+
+    def _update_certs(self):
+        print("Updating the certificate lists")
+        certs_json = self._download_certs()
+        self._save_certs(certs_json)
+        self._build_certlist()
+
+    def _start_update_timer(self):
+        """
+        The certificate lists should be updated every day. This starts a timer to refresh them continously.
+        """
+        x = datetime.today()
+        y = x.replace(day=x.day, hour=1, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        delta_t=y-x
+
+        secs=delta_t.total_seconds()
+
+        self._update_timer = Timer(secs, self._update_certs)
+        self._update_timer.start()        
