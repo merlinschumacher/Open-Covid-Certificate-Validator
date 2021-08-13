@@ -1,4 +1,4 @@
-FROM python:3-buster
+FROM python:3-slim
 RUN useradd -M -s /bin/bash -d /code occv
 WORKDIR /code
 COPY --chown=occv:occv . /code
