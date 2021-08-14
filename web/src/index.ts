@@ -63,7 +63,7 @@ function resumeScan() {
 scanButton.addEventListener("click", resumeScan);
 
 function requestValidation(code: string): void {
-  postData('http://127.0.0.1:8000/', { "dcc": code }).then(response => response.json().then(data => {
+  postData('/', { "dcc": code }).then(response => response.json().then(data => {
     showValidationResult(data);
     scanButton.classList.add('visible');
   }
