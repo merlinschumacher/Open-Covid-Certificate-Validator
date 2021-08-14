@@ -1,6 +1,8 @@
+aiofiles==0.7.0
 asgiref==3.4.1
 attrs==21.2.0
 base45==0.4.2
+caio==0.9.3
 cbor2==5.4.1
 certifi==2021.5.30
 cffi==1.14.6
