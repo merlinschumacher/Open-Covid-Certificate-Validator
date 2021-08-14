@@ -10,7 +10,7 @@ The server provides a simple JSON-API that returns validation result and the dat
 
 The easiest way to run OCCV is to use a container. An up to date container is provided via GitHubs Container Image Registry under `ghcr.io/merlinschumacher/open-covid-certificate-validator:main`.
 
-To start the container you need a recent version of Docker and `docker-compose`. Just execute `docker-compose up` and the server will answer on port 8000 of your server. Modify the compose file to fit your needs. Currently only validation against the [german list of certificates](https://github.com/Digitaler-Impfnachweis/certification-apis) provided by Ubirch is supported.
+To start the container you need a recent version of Docker and `docker-compose`. Just execute `docker-compose up` and the server will answer on port 8000 of your server. Modify the compose file to fit your needs. Currently only validation against the [german list of certificates](https://github.com/Digitaler-Impfnachweis/certification-apis) provided by Ubirch is supported. The certificates are updated every 24 hours.
 
 To access the API send a POST request containing the following JSON to `/`:
 
@@ -67,6 +67,10 @@ If it's invalid, the server will simply return
 ```
 
 The `ddcdata` contain all the data encoded in the certificate according to the [specification by the EU](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf)
+
+## Privacy
+
+While the data encoded in the certificate are sent to the server, they are never stored. They will be processed to generate a response and are deleted afterwards. There is no logging of indidivual data of any kind.
 
 ## The web service
 
