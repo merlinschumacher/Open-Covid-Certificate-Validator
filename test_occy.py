@@ -46,7 +46,6 @@ test_response = json.loads("""{
 def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {}
 
 def test_validate_dcc_valid():
     response = client.post("/",
