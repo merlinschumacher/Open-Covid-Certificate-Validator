@@ -1,7 +1,9 @@
 import os
 from typing import Union
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import RedirectResponse, FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -98,12 +100,28 @@ class DCCData(BaseModel):
         }
 
 
-@app.get("/")
-async def read_root():
-    """
-    Return the root path of the API
-    """
-    return {}
+
+folder = 'web/dist/'
+app.mount("/static/", StaticFiles(directory=folder), name="static")
+
+@app.get("/", response_class=FileResponse, include_in_schema=False)
+def read_index(request: Request):
+    path = folder + 'index.html' 
+    return FileResponse(path)
+
+@app.get("/{catchall:path}", response_class=FileResponse, include_in_schema=False)
+def read_index(request: Request):
+    # check first if requested file exists
+    path = request.path_params["catchall"]
+    file = folder+path
+
+    print('look for: ', path, file)
+    if os.path.exists(file):
+        return FileResponse(file)
+
+    # otherwise return index files
+    index = folder + 'index.html' 
+    return FileResponse(index)
 
 @app.post("/", response_model=DCCData)
 async def validate_dcc(dcc: DCCQuery):
