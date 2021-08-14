@@ -9,6 +9,7 @@ services:
     environment:
       - TZ=Europe/Berlin
       - CERT_COUNTRY=DE
+      - DEV_MODE=true
     ports: 
       - "8000:8000"
     container_name: "occv" 

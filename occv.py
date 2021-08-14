@@ -3,11 +3,18 @@ from typing import Union
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from validator import DCCValidator
 
+print("Open Covid Certificate Validator")
+
 # get the server country from the environment 
 CERT_COUNTRY = os.getenv("CERT_COUNTRY", "XX")
+DEV_MODE = os.getenv("DEV_MODE", 'False').lower() in ('true', '1', 't')
+
+print("Certificate country: "+ CERT_COUNTRY)
+print("Development mode: "+str(DEV_MODE))
 
 api_description = """
     Open Covid Certificate Validator API
@@ -20,6 +27,19 @@ app = FastAPI(title="Open Covid Certificate Validator",
               description=api_description, 
               version="0.0.1", 
               )
+
+if DEV_MODE:
+    origins = [
+        "http://127.0.0.1:8080",
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # initialize the validation server
 validator = DCCValidator(CERT_COUNTRY)
