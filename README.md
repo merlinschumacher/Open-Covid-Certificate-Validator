@@ -4,6 +4,8 @@ This an open source API to validate [EU Digital COVID Certificates](https://ec.e
 
 The server provides a simple JSON-API that returns validation result and the data stored inside a certificate. There is also a simple web frontend to test the service.
 
+# NOTICE: THIS IS NOT AN OFFICIAL VALIDATOR!
+
 ## Getting started
 
 The easiest way to run OCCV is to use a container. An up to date container is provided via GitHubs Container Image Registry under `ghcr.io/merlinschumacher/open-covid-certificate-validator:main`.
