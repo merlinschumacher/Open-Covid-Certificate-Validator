@@ -83,7 +83,7 @@ The `ddcdata` field contains all the data encoded in the certificate according t
 
 Everyone is invited to contribute to the service and provide pull-requests, ideas and feedback.
 
-Foremost the service needs testing with certificates from all issuing countries and also the implementation of all available validation lists from the EU members. You can contribute with testing your certificate and reporting your success oder possible errors.
+Foremost the service needs testing with certificates from all issuing countries and also the implementation of all available validation lists from the EU members. You can contribute with testing your certificate and reporting your success or possible errors.
 
 ## Privacy
 
