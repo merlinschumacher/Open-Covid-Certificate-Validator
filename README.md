@@ -1,25 +1,25 @@
 # Open Covid Certificate Validator
 
-![](https://img.shields.io/github/workflow/status/merlinschumacher/Open-Covid-Certificate-Validator/Publish%20Docker%20images%20to%20GitHub%20Package%20Registry?style=for-the-badge)
-![](https://img.shields.io/github/languages/top/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
-![](https://img.shields.io/github/license/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
-![](https://img.shields.io/github/stars/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+![Build badge](https://img.shields.io/github/workflow/status/merlinschumacher/Open-Covid-Certificate-Validator/Publish%20Docker%20images%20to%20GitHub%20Package%20Registry?style=for-the-badge)
+![Language badge](https://img.shields.io/github/languages/top/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+![License badge](https://img.shields.io/github/license/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+![Star count badge](https://img.shields.io/github/stars/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
 
-This an open source API to validate [EU Digital COVID Certificates](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en). It receives a COVID certificate and validates it using a list of signing certificates provided by a EU member state.
+This an open source API to validate [EU Digital COVID Certificates](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en). It receives a COVID certificate and validates it using a list of signing certificates provided by an EU member state.
 
 The server provides a simple JSON-API that returns validation result and the data stored inside a certificate. There is also a simple web frontend to test the service.
 
-There is a basic demo available at 
+There is a basic demo available at
 
 [https://covid.merlinschumacher.de/](https://covid.merlinschumacher.de/)
 
 The demo neither logs IP addresses nor stores any COVID certificate data.
 
-# NOTICE: THIS IS NOT AN OFFICIAL VALIDATOR! IT COMES WITHOUR ANY WARRANTIES!
+## **NOTICE: THIS IS NOT AN OFFICIAL VALIDATOR! IT COMES WITHOUT ANY WARRANTIES!**
 
 ## Getting started
 
-The easiest way to run OCCV is to use a container. An up to date container is provided via GitHubs Container Image Registry under `ghcr.io/merlinschumacher/open-covid-certificate-validator:main`.
+The easiest way to run OCCV is to use a container. An up to date docker image is provided via GitHubs Container Image Registry under `ghcr.io/merlinschumacher/open-covid-certificate-validator:main`.
 
 To start the container you need a recent version of Docker and `docker-compose`. Just execute `docker-compose up` and the server will answer on port 8000 of your server. Modify the compose file to fit your needs. Currently only validation against the [german list of certificates](https://github.com/Digitaler-Impfnachweis/certification-apis) provided by Ubirch is supported. But this should be able to validate all certificates issued in the EU. The certificates are updated every 24 hours.
 
@@ -77,13 +77,13 @@ If it's invalid, the server will simply return
 }
 ```
 
-The `ddcdata` contain all the data encoded in the certificate according to the [specification by the EU](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf)
+The `ddcdata` field contains all the data encoded in the certificate according to the [specification by the EU](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf)
 
 ## Contributing
 
 Everyone is invited to contribute to the service and provide pull-requests, ideas and feedback.
 
-Foremost the service needs testing with certificates from all issuing countries and also the implementation of all available validation lists from the EU members. You can contribute with testing your certificate and reporting your success oder possible errors. 
+Foremost the service needs testing with certificates from all issuing countries and also the implementation of all available validation lists from the EU members. You can contribute with testing your certificate and reporting your success oder possible errors.
 
 ## Privacy
 
