@@ -1,10 +1,21 @@
 # Open Covid Certificate Validator
 
+![](https://img.shields.io/github/workflow/status/merlinschumacher/Open-Covid-Certificate-Validator/Publish%20Docker%20images%20to%20GitHub%20Package%20Registry?style=for-the-badge)
+![](https://img.shields.io/github/languages/top/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+![](https://img.shields.io/github/license/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+![](https://img.shields.io/github/stars/merlinschumacher/Open-Covid-Certificate-Validator?style=for-the-badge)
+
 This an open source API to validate [EU Digital COVID Certificates](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en). It receives a COVID certificate and validates it using a list of signing certificates provided by a EU member state.
 
 The server provides a simple JSON-API that returns validation result and the data stored inside a certificate. There is also a simple web frontend to test the service.
 
-# NOTICE: THIS IS NOT AN OFFICIAL VALIDATOR!
+There is a basic demo available at 
+
+[https://covid.merlinschumacher.de/](https://covid.merlinschumacher.de/)
+
+The demo neither logs IP addresses nor stores any COVID certificate data.
+
+# NOTICE: THIS IS NOT AN OFFICIAL VALIDATOR! IT COMES WITHOUR ANY WARRANTIES!
 
 ## Getting started
 
