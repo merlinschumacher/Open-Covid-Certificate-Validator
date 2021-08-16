@@ -20,7 +20,7 @@ class check_test_dcc(unittest.TestCase):
         self.assertIsInstance(content, dict)
         self.assertTrue(valid)
         self.assertEqual(str(content), test_dcc_content)
-    
+
     def test_dcc_validator_invalid(self):
         """
         Check that the test dcc is invalid.
@@ -33,7 +33,7 @@ class check_test_dcc(unittest.TestCase):
         valid, content = dcc_validator.validate(test_dcc)
         self.assertIsNone(content)
         self.assertFalse(valid)
-   
+
     def test_dcc_validator_failure(self):
         """
         Check that the test dcc is broken.
@@ -46,7 +46,22 @@ class check_test_dcc(unittest.TestCase):
         valid, content = dcc_validator.validate(test_dcc)
         self.assertIsNone(content)
         self.assertFalse(valid)
-    
+
+    def test_dcc_validator_de_signature_check(self):
+        """
+        Check that the test dcc validates a real DCC.
+        """
+        # Initialize the DCCValidator to download the certs
+        # and check their signature
+        dcc_validator = DCCValidator("DE")
+        self.assertIsInstance(dcc_validator, DCCValidator)
+        # Destroy the DCCValidator to recreate it
+        del dcc_validator
+        # Create a new DCCValidator that will read the local certs
+        # and check their signature
+        dcc_validator = DCCValidator("DE")
+        self.assertIsInstance(dcc_validator, DCCValidator)
+
     def test_dcc_validator_real_validity(self):
         """
         Check that the test dcc validates a real DCC.
@@ -58,6 +73,7 @@ class check_test_dcc(unittest.TestCase):
         valid, content = dcc_validator.validate(test_dcc)
         self.assertIsNotNone(content)
         self.assertFalse(valid)
+
 
 if __name__ == '__main__':
     unittest.main()
