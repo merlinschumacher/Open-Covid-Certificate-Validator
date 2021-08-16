@@ -20,7 +20,6 @@ class CertificateLoader:
         self._cert_url = None
         self._cert_filename = None
         self._update_timer = None
-        pass
 
     def __call__(self):
         """
