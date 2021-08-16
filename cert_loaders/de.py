@@ -68,7 +68,6 @@ class CertificateLoader_DE(CertificateLoader):
         """
         Stores the certificates and the signature in a file
         """
-        print(type(certs_str))
         with open("./data/" + self._cert_filename, 'wb') as f:
             f.write(certs_str)
         with open("./data/" + self._cert_filename+".sig", 'wb') as s:
