@@ -57,14 +57,14 @@ class DCCValidator():
 
 def main():
 
-    # Retrieve the requrested country for the certificates from env or fall back to DE
+    # Retrieve the requrested country for the certificates
+    # from env or fall back to DE
     CERT_COUNTRY = os.getenv("CERT_COUNTRY", "DE")
     # Retrieve DCC from env or fall back on empty string
     DCC = os.getenv("DCC", "")
 
     # Initiate the DSCValidator
     validator = DCCValidator(CERT_COUNTRY)
-
     # Validate the DCC
     print(validator.validate(DCC))
 
