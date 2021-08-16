@@ -128,5 +128,6 @@ dmypy.json
 .pyre/
 
 data/*.json
+data/*.sig
 .vscode/
 node_modules/
