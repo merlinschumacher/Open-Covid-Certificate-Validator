@@ -58,6 +58,7 @@ class CertificateLoader:
         This method needs to be implemented in every subclass and is
         intentionally empty, as every country has a different way of
         providing certificates.
+        It must save the certificates in a file.
         Returns:
             cert_json: A dictionary containing the certificates.
         """
@@ -75,9 +76,11 @@ class CertificateLoader:
             self._certs.append(load_pem_hcert_dsc(certs))
 
     def _update_certs(self):
+        """
+        Redownloads the certificates and updates the list stored in RAM.
+        """
         print("Updating the certificate lists")
-        certs_json = self._download_certs()
-        self._save_certs(certs_json)
+        self._download_certs()
         self._build_certlist()
 
     def _start_update_timer(self):
