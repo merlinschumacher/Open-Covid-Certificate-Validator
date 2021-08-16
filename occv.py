@@ -1,33 +1,32 @@
 import os
-from typing import Union
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import RedirectResponse, FileResponse, HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
 
 from validator import DCCValidator
 
 print("Open Covid Certificate Validator")
 
-# get the server country from the environment 
+# get the server country from the environment
 CERT_COUNTRY = os.getenv("CERT_COUNTRY", "XX")
 DEV_MODE = os.getenv("DEV_MODE", 'False').lower() in ('true', '1', 't')
 
-print("Certificate country: "+ CERT_COUNTRY)
+print("Certificate country: " + CERT_COUNTRY)
 print("Development mode: "+str(DEV_MODE))
 
 api_description = """
     Open Covid Certificate Validator API
 
     This API will validate compliant EU Digital Covid Certificates.
-    """ 
+    """
 
 
-app = FastAPI(title="Open Covid Certificate Validator", 
-              description=api_description, 
-              version="0.0.1", 
+app = FastAPI(title="Open Covid Certificate Validator",
+              description=api_description,
+              version="0.0.1",
               )
 
 if DEV_MODE:
@@ -47,8 +46,11 @@ if DEV_MODE:
 validator = DCCValidator(CERT_COUNTRY)
 
 # defines the schema for the request
+
+
 class DCCQuery(BaseModel):
     dcc: str = None
+
     class Config:
         schema_extra = {
             "example": {
@@ -61,17 +63,18 @@ class DCCQuery(BaseModel):
 class DCCData(BaseModel):
     valid: bool = False
     dccdata: dict = None
+
     class Config:
         schema_extra = {
             "example": {
-                    "valid": True,
-                    "dccdata": {
-                        "1": "AT",
-                        "4": 1635876000,
-                        "6": 1620324000,
-                        "-260": {
-                            "1": {
-                                "v": [
+                "valid": True,
+                "dccdata": {
+                    "1": "AT",
+                    "4": 1635876000,
+                    "6": 1620324000,
+                    "-260": {
+                        "1": {
+                            "v": [
                                 {
                                     "dn": 1,
                                     "ma": "ORG-100030215",
@@ -84,32 +87,34 @@ class DCCData(BaseModel):
                                     "sd": 2,
                                     "tg": "840539006"
                                 }
-                                ],
-                                "nam": {
+                            ],
+                            "nam": {
                                 "fnt": "MUSTERFRAU<GOESSINGER",
                                 "fn": "Musterfrau-Gößinger",
                                 "gnt": "GABRIELE",
                                 "gn": "Gabriele"
-                                },
-                                "ver": "1.0.0",
-                                "dob": "1998-02-26"
-                            }
+                            },
+                            "ver": "1.0.0",
+                            "dob": "1998-02-26"
                         }
                     }
+                }
             }
         }
-
 
 
 folder = 'web/dist/'
 app.mount("/static/", StaticFiles(directory=folder), name="static")
 
+
 @app.get("/", response_class=FileResponse, include_in_schema=False)
 def read_index(request: Request):
-    path = folder + 'index.html' 
+    path = folder + 'index.html'
     return FileResponse(path)
 
-@app.get("/{catchall:path}", response_class=FileResponse, include_in_schema=False)
+
+@app.get("/{catchall:path}", response_class=FileResponse,
+         include_in_schema=False)
 def read_index(request: Request):
     # check first if requested file exists
     path = request.path_params["catchall"]
@@ -120,8 +125,9 @@ def read_index(request: Request):
         return FileResponse(file)
 
     # otherwise return index files
-    index = folder + 'index.html' 
+    index = folder + 'index.html'
     return FileResponse(index)
+
 
 @app.post("/", response_model=DCCData)
 async def validate_dcc(dcc: DCCQuery):
@@ -133,9 +139,9 @@ async def validate_dcc(dcc: DCCQuery):
         valid, dcc_data = validator.validate(dcc)
     except Exception as error:
         print(error)
-        raise HTTPException(status_code=415, detail=str("Data format incompatible."))
+        raise HTTPException(status_code=415, detail=str(
+            "Data format incompatible."))
         dcc_data = None
         valid = False
 
-
-    return  DCCData(valid=valid, dccdata=dcc_data) 
+    return DCCData(valid=valid, dccdata=dcc_data)

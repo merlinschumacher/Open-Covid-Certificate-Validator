@@ -47,27 +47,31 @@ def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
 
+
 def test_validate_dcc_valid():
     response = client.post("/",
-    json={"dcc": test_dcc}
-    )
+                           json={"dcc": test_dcc}
+                           )
     assert response.status_code == 200
-    assert response.json() == test_response 
+    assert response.json() == test_response
+
 
 def test_validate_dcc_invalid():
     response = client.post("/",
-    json={"dcc": test_dcc}
-    )
+                           json={"dcc": test_dcc}
+                           )
     assert response.status_code == 200
+
 
 def test_validate_dcc_empty():
     response = client.post("/",
-    json={}
-    )
+                           json={}
+                           )
     assert response.status_code == 415
+
 
 def test_validate_dcc_none():
     response = client.post("/",
-    json=None
-    )
+                           json=None
+                           )
     assert response.status_code == 422
