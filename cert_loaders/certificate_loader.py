@@ -1,12 +1,15 @@
 import json
 from datetime import datetime, timedelta
 from threading import Timer
+
 from cwt import load_pem_hcert_dsc
 
 
 class CertificateLoader:
     """
-    A generic class to dowload certificates from a url and store them in a file.
+    A generic class to dowload certificates from a url and store them
+    in a file.
+
     If a file is already present, it will be loaded instead of downloaded.
     Returns:
         A list of certificates.
@@ -53,8 +56,8 @@ class CertificateLoader:
     def _download_certs(self):
         """
         Downloads the signed germa certificates from the official servers.
-        This method needs to be implemented in every subclass and is 
-        intentionally empty, as every country has a different way of 
+        This method needs to be implemented in every subclass and is
+        intentionally empty, as every country has a different way of
         providing certificates.
         Returns:
             cert_json: A dictionary containing the certificates.
@@ -64,7 +67,8 @@ class CertificateLoader:
     def _build_certlist(self):
         """
         Builds the list of certificates from json data.
-        This method needs to be implemented in every subclass for every country.
+        This method needs to be implemented in every subclass
+        for every country.
         """
 
         certs_json = self._load_certs()
@@ -79,13 +83,16 @@ class CertificateLoader:
 
     def _start_update_timer(self):
         """
-        The certificate lists should be updated every day. This starts a timer to refresh them continously.
+        The certificate lists should be updated every day.
+        This starts a timer to refresh them continously.
         """
         x = datetime.today()
-        y = x.replace(day=x.day, hour=1, minute=0, second=0, microsecond=0) + timedelta(days=1)
-        delta_t=y-x
+        y = x.replace(day=x.day, hour=1, minute=0, second=0,
+                      microsecond=0) + timedelta(days=1)
+        delta_t = y-x
 
-        secs=delta_t.total_seconds()
+        secs = delta_t.total_seconds()
 
         self._update_timer = Timer(secs, self._update_certs)
-        self._update_timer.start()        
+        self._update_timer.daemon = True
+        self._update_timer.start()
