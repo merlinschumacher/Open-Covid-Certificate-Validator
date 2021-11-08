@@ -176,6 +176,7 @@ function tick(): void {
       }
 
       if (code) {
+        console.log("Code found containing:", code);
         // Check if there is a possibility of this being a valid certificate before sending to server
         if (code.data.startsWith("HC1:")) {
           console.log("Possible DCC found.")
