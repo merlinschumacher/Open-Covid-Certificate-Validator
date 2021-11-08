@@ -7,6 +7,7 @@ from base45 import b45decode
 from cwt import COSE, Claims
 
 from cert_loaders.de import CertificateLoader_DE
+from cert_loaders.nl import CertificateLoader_NL
 from cert_loaders.test import CertificateLoader_XX
 
 
@@ -15,6 +16,7 @@ class DCCValidator():
     def __init__(self, country):
         self.CERT_LOADERS: Dict[str, Callable[[], None]] = {
             'DE': CertificateLoader_DE,
+            'NL': CertificateLoader_NL,
             'XX': CertificateLoader_XX
         }
         # initiates the certificate loader
