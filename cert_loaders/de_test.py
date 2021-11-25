@@ -17,9 +17,9 @@ from .helper import create_cose_key
 class CertificateLoader_DE(CertificateLoader):
     def __init__(self):
         super().__init__()
-        self._cert_url = 'https://de.dscg.ubirch.com/trustList/DSC/'
-        self._cert_filename = 'de.json'
-        self._cert_sign_key = 'https://github.com/Digitaler-Impfnachweis/covpass-ios/raw/main/Certificates/PROD_RKI/CA/pubkey.pem'
+        self._cert_url = 'https://de.test.dscg.ubirch.com/trustList/DSC/'
+        self._cert_filename = 'de_test.json'
+        self._cert_sign_key = 'https://github.com/Digitaler-Impfnachweis/covpass-ios/raw/main/Certificates/DEMO_RKI/CA/pubkey.pem'
         self._build_certlist()
         self._start_update_timer()
 

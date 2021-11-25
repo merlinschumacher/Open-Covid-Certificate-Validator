@@ -12,6 +12,7 @@ print("Open Covid Certificate Validator")
 
 # get the server country from the environment
 CERT_COUNTRY = os.getenv("CERT_COUNTRY", "XX")
+global DEV_MODE
 DEV_MODE = os.getenv("DEV_MODE", 'False').lower() in ('true', '1', 't')
 
 print("Certificate country: " + CERT_COUNTRY)
@@ -26,7 +27,7 @@ api_description = """
 
 app = FastAPI(title="Open Covid Certificate Validator",
               description=api_description,
-              version="0.0.2",
+              version="0.0.3",
               )
 
 if DEV_MODE:
@@ -105,6 +106,12 @@ class DCCData(BaseModel):
 
 folder = 'web/dist/'
 app.mount("/static/", StaticFiles(directory=folder), name="static")
+
+
+@app.get("/business_rules/")
+def business_rules(request: Request):
+    business_rules = validator.get_business_rules()
+    return business_rules
 
 
 @app.get("/", response_class=FileResponse, include_in_schema=False)

@@ -20,6 +20,7 @@ class CertificateLoader:
         self._cert_url = None
         self._cert_filename = None
         self._update_timer = None
+        self.rules = None
 
     def __call__(self):
         """
@@ -47,9 +48,12 @@ class CertificateLoader:
                 if not certs_json:
                     certs_json = self._download_certs()
                     self._save_certs(certs_json)
-        except FileNotFoundError:
-            certs_json = self._download_certs()
-            self._save_certs(certs_json)
+        except Exception as e:
+            if (e is FileNotFoundError):
+                certs_json = self._download_certs()
+                self._save_certs(certs_json)
+            else:
+                raise e
         return certs_json
 
     def _download_certs(self):
