@@ -23,6 +23,13 @@ The easiest way to run OCCV is to use a container. An up to date docker image is
 
 To start the container you need a recent version of Docker and `docker-compose`. Just execute `docker-compose up` and the server will answer on port 8000 of your server. Modify the compose file to fit your needs. Currently only validation against the [German list of certificates](https://github.com/Digitaler-Impfnachweis/certification-apis) provided by Ubirch and the [Austrian list of certificates](https://github.com/Federal-Ministry-of-Health-AT/green-pass-overview#details-on-trust-listsbusiness-rulesvalue-sets) is supported. But this should be able to validate all certificates issued in the EU. The certificates are updated every 24 hours.
 
+To start the container just with `docker` run:
+
+```
+docker run -p 8000:8000 -e CERT_COUNTRY=DE ghcr.io/merlinschumacher/open-covid-certificate-validator:main
+```
+
+
 If you want to start the service manually, you need to set up a virtual envinroment and install the package requirements. Then set the environment variable `CERT_COUNTRY`to either `DE` or `AT` and run `python main.py`. After the service starts it should run on `http://localhost:8000`.
 
 To access the API send a POST request containing the following JSON to `/`:
