@@ -96,7 +96,6 @@ def main(dev_mode=False):
     CERT_COUNTRY = os.getenv("CERT_COUNTRY", "AT")
     # Retrieve DCC from env or fall back on empty string
     DCC = os.getenv("DCC", "")
-    DCC = "***REMOVED***"
 
     # Initiate the DSCValidator
     validator = DCCValidator(country=CERT_COUNTRY, dev_mode=dev_mode)
