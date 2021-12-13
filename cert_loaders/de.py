@@ -21,7 +21,6 @@ class CertificateLoader_DE(CertificateLoader):
         self._cert_filename = 'de.json'
         self._cert_sign_key = 'https://github.com/Digitaler-Impfnachweis/covpass-ios/raw/main/Certificates/PROD_RKI/CA/pubkey.pem'
         self._build_certlist()
-        self._start_update_timer()
 
     def _read_certs_from_file(self):
         """

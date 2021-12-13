@@ -1,3 +1,4 @@
+import datetime
 from typing import Any, Dict
 
 import cbor2
@@ -36,7 +37,6 @@ class CertificateLoader_AT(CertificateLoader):
         self._business_rules_sig = 'https://dgc-trust.qr.gv.at/rulessig'
         self._build_certlist()
         self._load_rules()
-        self._start_update_timer()
 
     def _read_certs_from_file(self):
         """
@@ -276,3 +276,4 @@ class CertificateLoader_AT(CertificateLoader):
         for cert in certs_cbor['c']:
             x509 = load_der_x509_certificate(cert['c'])
             self._certs.append(create_cose_key(x509))
+
