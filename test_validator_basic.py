@@ -1,14 +1,16 @@
 import os
 import unittest
 
+from freezegun.api import freeze_time
+
 from occv import DCCValidator
 
-global DEV_MODE
 DEV_MODE = True
 
 
 class check_test_dcc(unittest.TestCase):
 
+    @freeze_time("2021-08-01")
     def test_dcc_validator_success(self):
         """
         Check that the test dcc is valid.
@@ -25,6 +27,7 @@ class check_test_dcc(unittest.TestCase):
         self.assertTrue(valid)
         self.assertEqual(str(content), test_dcc_content)
 
+    @freeze_time("2021-08-01")
     def test_dcc_validator_invalid(self):
         """
         Check that the test dcc is invalid.
@@ -38,6 +41,7 @@ class check_test_dcc(unittest.TestCase):
         self.assertEqual(str(content), "{}")
         self.assertFalse(valid)
 
+    @freeze_time("2021-08-01")
     def test_dcc_validator_failure(self):
         """
         Check that the test dcc is broken.
@@ -50,6 +54,7 @@ class check_test_dcc(unittest.TestCase):
         self.assertEqual(str(content), "{}")
         self.assertFalse(valid)
 
+    @freeze_time("2021-08-01")
     def test_dcc_validator_de_signature_check(self):
         """
         Check that the test dcc validates a real DCC.
@@ -65,6 +70,7 @@ class check_test_dcc(unittest.TestCase):
         dcc_validator = DCCValidator("DE")
         self.assertIsInstance(dcc_validator, DCCValidator)
 
+    @freeze_time("2021-08-01")
     def test_dcc_validator_real_validity(self):
         """
         Check that the test dcc validates a real DCC.
@@ -73,9 +79,10 @@ class check_test_dcc(unittest.TestCase):
 
         # Get a real DCC from the environment provided by the CI system
         test_dcc = os.getenv("VALID_DCC", "")
-        valid, content = dcc_validator.validate(test_dcc)
-        self.assertIsNotNone(content)
-        self.assertFalse(valid)
+        if test_dcc != "":
+            valid, content = dcc_validator.validate(test_dcc)
+            self.assertIsNotNone(content)
+            self.assertFalse(valid)
 
 
 if __name__ == '__main__':
