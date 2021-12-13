@@ -5,14 +5,13 @@ from typing import Callable, Dict
 import cwt
 from base45 import b45decode
 from cwt import Claims
+from cwt import cbor_processor
+import cbor2
 
 from cert_loaders.de import CertificateLoader_DE
 from cert_loaders.at import CertificateLoader_AT
 from cert_loaders.at_test import CertificateLoader_AT_TEST
 from cert_loaders.test import CertificateLoader_XX
-
-global DEV_MODE
-DEV_MODE = False
 
 
 class DCCValidator():
@@ -24,8 +23,7 @@ class DCCValidator():
             'AT_TEST': CertificateLoader_AT_TEST,
             'XX': CertificateLoader_XX
         }
-        global DEV_MODE
-        DEV_MODE = dev_mode
+        self.DEV_MODE = dev_mode
         # initiates the certificate loader if no certificate is passed to the object
         # passing the certs to the object will not initiate the certificate loader
         # this is useful for testing
@@ -49,13 +47,13 @@ class DCCValidator():
             claims = Claims.new(decoded)
             return [True, claims.to_dict()]
         except Exception as e:
-            print("Could not validate certificate.")
-            if DEV_MODE:
-                raise e
-            else:
-                print(e)
+            decoded_noverify = cbor2.loads(dcc)
+            decoded_noverify = cbor2.loads(decoded_noverify.value[2])
+            print(decoded_noverify)
 
-            return [False,  {}]
+            print("Could not validate certificate.")
+
+            return [False, decoded_noverify]
 
     def _decode(self, dcc):
         dcc = dcc.encode()
@@ -64,7 +62,7 @@ class DCCValidator():
         try:
             dcc = b45decode(dcc)
         except Exception as e:
-            if DEV_MODE:
+            if self.DEV_MODE:
                 print(e)
             if (e is ValueError):
                 return None
@@ -73,7 +71,7 @@ class DCCValidator():
             try:
                 dcc = zlib.decompress(dcc)
             except Exception as e:
-                if DEV_MODE:
+                if self.DEV_MODE:
                     print(e)
                 return None
 
@@ -89,21 +87,20 @@ class DCCValidator():
         return "{status]"
 
 
-
-def main():
+def main(dev_mode=False):
 
     # Retrieve the requrested country for the certificates
     # from env or fall back to DE
-    CERT_COUNTRY = os.getenv("CERT_COUNTRY", "DE")
+    CERT_COUNTRY = os.getenv("CERT_COUNTRY", "AT")
     # Retrieve DCC from env or fall back on empty string
     DCC = os.getenv("DCC", "")
+    DCC = "***REMOVED***"
 
     # Initiate the DSCValidator
-    validator = DCCValidator(CERT_COUNTRY)
+    validator = DCCValidator(country=CERT_COUNTRY, dev_mode=dev_mode)
     # Validate the DCC
     print(validator.validate(DCC))
 
 
 if __name__ == '__main__':
-    DEV_MODE = True
-    main()
+    main(True)
