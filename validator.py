@@ -47,11 +47,13 @@ class DCCValidator():
             claims = Claims.new(decoded)
             return [True, claims.to_dict()]
         except Exception as e:
-            decoded_noverify = cbor2.loads(dcc)
-            decoded_noverify = cbor2.loads(decoded_noverify.value[2])
-            print(decoded_noverify)
-
-            print("Could not validate certificate.")
+            try:
+                decoded_noverify = cbor2.loads(dcc)
+                decoded_noverify = cbor2.loads(decoded_noverify.value[2])
+                print("Could not validate certificate.")
+            except Exception as e:
+                print("Could not decode certificate.")
+                return [False, {}]
 
             return [False, decoded_noverify]
 
