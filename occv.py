@@ -12,7 +12,6 @@ print("Open Covid Certificate Validator")
 
 # get the server country from the environment
 CERT_COUNTRY = os.getenv("CERT_COUNTRY", "XX")
-global DEV_MODE
 DEV_MODE = os.getenv("DEV_MODE", 'False').lower() in ('true', '1', 't')
 
 print("Certificate country: " + CERT_COUNTRY)
@@ -44,7 +43,7 @@ if DEV_MODE:
     )
 
 # initialize the validation server
-validator = DCCValidator(CERT_COUNTRY)
+validator = DCCValidator(country=CERT_COUNTRY, dev_mode=DEV_MODE)
 
 # defines the schema for the request
 
