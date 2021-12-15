@@ -8,10 +8,11 @@ from cryptography.hazmat.primitives.asymmetric.ec import ECDSA
 from cryptography.hazmat.primitives.asymmetric.utils import \
     encode_dss_signature
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
-from cryptography.x509 import load_der_x509_certificate
+from cwt.helpers.hcert import load_pem_hcert_dsc
+
+from cert_loaders.helper import create_chunked_cert
 
 from .certificate_loader import CertificateLoader
-from .helper import create_cose_key
 
 
 class CertificateLoader_DE(CertificateLoader):
@@ -144,7 +145,5 @@ class CertificateLoader_DE(CertificateLoader):
         certs_json = certs_json["certificates"]
 
         for cert in certs_json:
-
-            raw_data = b64decode(cert["rawData"])
-            x509 = load_der_x509_certificate(raw_data)
-            self._certs.append(create_cose_key(x509))
+            cert_data = create_chunked_cert(cert["rawData"])
+            self._certs.append(load_pem_hcert_dsc(cert_data))

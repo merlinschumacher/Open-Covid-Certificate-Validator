@@ -1,16 +1,14 @@
-from typing import Any, Dict
-
 import cbor2
+import cryptography
 import requests
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import hashes
 from cryptography.x509 import load_der_x509_certificate
 from cwt import COSE, load_pem_hcert_dsc
-from .helper import create_cose_key
 
 from .certificate_loader import CertificateLoader
 
-## This is the AT Test Certificate
+# This is the AT Test Certificate
 root_certificate = """-----BEGIN CERTIFICATE-----
 MIIB6zCCAZGgAwIBAgIKAXmEuohlRbR2qzAKBggqhkjOPQQDAjBQMQswCQYDVQQG
 EwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQLDAFRMQwwCgYDVQQFEwMwMDEx
@@ -276,4 +274,6 @@ class CertificateLoader_AT_TEST(CertificateLoader):
 
         for cert in certs_cbor['c']:
             x509 = load_der_x509_certificate(cert['c'])
-            self._certs.append(create_cose_key(x509))
+            cert_pem = x509.public_bytes(
+                cryptography.hazmat.primitives.serialization.Encoding.PEM).decode('utf-8')
+            self._certs.append(load_pem_hcert_dsc(cert_pem))
