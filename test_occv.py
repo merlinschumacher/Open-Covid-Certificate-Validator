@@ -2,9 +2,9 @@ import json
 
 from fastapi.testclient import TestClient
 
-from occv import DEV_MODE, app
+from occv import app
 
-DEV_MODE = True;
+DEV_MODE = True
 
 client = TestClient(app)
 
