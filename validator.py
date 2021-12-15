@@ -2,15 +2,14 @@ import os
 import zlib
 from typing import Callable, Dict
 
+import cbor2
 import cwt
 from base45 import b45decode
 from cwt import Claims
-from cwt import cbor_processor
-import cbor2
 
-from cert_loaders.de import CertificateLoader_DE
 from cert_loaders.at import CertificateLoader_AT
 from cert_loaders.at_test import CertificateLoader_AT_TEST
+from cert_loaders.de import CertificateLoader_DE
 from cert_loaders.test import CertificateLoader_XX
 
 
