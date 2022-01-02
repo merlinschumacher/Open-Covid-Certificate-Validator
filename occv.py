@@ -112,6 +112,12 @@ def business_rules(request: Request):
     business_rules = validator.get_business_rules()
     return business_rules
 
+if DEV_MODE:
+    @app.get("/update_certs/")
+    def update_certs(request: Request):
+        validator.update_certs()
+        return None 
+
 
 @app.get("/", response_class=FileResponse, include_in_schema=False)
 def read_index(request: Request):
@@ -133,7 +139,6 @@ def read_index(request: Request):
     # otherwise return index files
     index = folder + 'index.html'
     return FileResponse(index)
-
 
 @app.post("/", response_model=DCCData)
 async def validate_dcc(dcc: DCCQuery):

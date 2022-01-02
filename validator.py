@@ -1,5 +1,6 @@
 import os
 import zlib
+from threading import Timer
 from typing import Callable, Dict
 
 import cbor2
@@ -32,9 +33,10 @@ class DCCValidator():
             self._certs = self._cert_loader()
         else:
             self._certs = certs
-
         print("Loaded %i certificates from %s certificate service." %
               (len(self._certs), country))
+        
+        self._start_update_timer()
 
     def validate(self, dcc):
         dcc = self._decode(dcc)
@@ -85,7 +87,23 @@ class DCCValidator():
         return self._cert_loader.rules
 
     def get_status(self):
-        return "{status]"
+        return "{status}"
+
+    def update_certs(self):
+        print ("Update timer ran out. Updating certificates.")
+        self._cert_loader.update_certs()
+        self.certs = self._cert_loader()
+        self._update_timer.cancel()
+        self._start_update_timer()
+
+    def _start_update_timer(self):
+        """
+        The certificate lists should be updated every day.
+        This starts a timer to refresh them continously.
+        """
+        self._update_timer = Timer(86400, self.update_certs)
+        self._update_timer.daemon = True
+        self._update_timer.start()
 
 
 def main(dev_mode=False):
