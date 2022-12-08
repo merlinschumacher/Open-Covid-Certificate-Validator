@@ -4,7 +4,7 @@ asn1crypto==1.4.0
 attrs==21.2.0
 base45==0.4.3
 cbor2==5.4.2
-certifi==2021.10.8
+certifi==2022.12.7
 certvalidator==0.11.1
 cffi==1.15.0
 charset-normalizer==2.0.9
