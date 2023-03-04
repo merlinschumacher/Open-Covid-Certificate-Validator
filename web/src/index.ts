@@ -56,7 +56,7 @@ function resumeScan() {
   canvasWrapper.classList.remove('invalid');
   canvasWrapper.classList.remove('hidden');
   validationResult.innerHTML = "";
-  infoText.innerHTML = "Scan an EU Covid Certificate now."
+  infoText.innerHTML = "Scan a vaccination certificate now."
   scanButton.classList.add('hidden');
   lastCode = "";
 }
@@ -211,7 +211,7 @@ navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).th
   video.srcObject = stream;
   video.setAttribute("playsinline", 'true'); // required to tell iOS safari we don't want fullscreen
   video.play();
-  infoText.innerHTML = "Scan an EU Covid Certificate now."
+  infoText.innerHTML = "Scan a vaccination certificate now."
   infoText.classList.add("top");
   requestAnimationFrame(tick);
 });
