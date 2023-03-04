@@ -26,7 +26,7 @@ api_description = """
 
 app = FastAPI(title="Open Covid Certificate Validator",
               description=api_description,
-              version="0.0.4",
+              version="0.0.7",
               )
 
 if DEV_MODE:
