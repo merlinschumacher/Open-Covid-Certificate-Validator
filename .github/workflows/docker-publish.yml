@@ -6,8 +6,8 @@ name: Publish Docker images to GitHub Package Registry
 # documentation.
 
 on:
-  schedule:
-    - cron: '31 2 * * *'
+ #schedule:
+ #   - cron: '31 2 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.
