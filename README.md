@@ -1,3 +1,9 @@
+# THIS PROJECT HAS BEEN ARCHIVED.
+
+Most of the certificate validation infrastructure of the participating countries has been shut down. So the validation isn't possible anymore, and this project serves no purpose. 
+
+Nevertheless the EU Digital COVID certificate project showed, that countries are able to implement complex digital services that are open and interoperable in a timely fashion - if they're inclined to do so. It would have been nice to see this develop into a new generation of nation- or even EU-wide digital health servies.
+
 # Open Covid Certificate Validator
 
 ![Build badge](https://img.shields.io/github/workflow/status/merlinschumacher/Open-Covid-Certificate-Validator/Publish%20Docker%20images%20to%20GitHub%20Package%20Registry?style=for-the-badge)
